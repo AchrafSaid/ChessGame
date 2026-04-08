@@ -9,53 +9,67 @@ void printBoard(char Board[10][10]){
         std::cout<<std::endl;
     }
 }
-void VerifyPostions(std::string postion,std::string move,std::int row,std::int col){
-    if(postion[0]=='a')
+void VerifyPostions(std::string position,int &row,int &col){
+    if(position[0]=='a')
         col=1;
-    if(postion[0]=='b')
-        col=2
+    if(position[0]=='b')
+        col=2;
     if(position[0]=='c')
         col=3;
-    if(postion[0]=='d')
+    if(position[0]=='d')
         col=4;
-    if(postion[0]=='e')
+    if(position[0]=='e')
         col=5;
-    if(postion[0]=='f')
+    if(position[0]=='f')
         col=6;
-    if(postion[0]=='g')
+    if(position[0]=='g')
         col=7;
-    if(postion[0]=='h')
+    if(position[0]=='h')
         col=8;
-    if(postion[1]=='1')
+    if(position[1]=='1')
         row=8;
-    if(postion[1]=='2')     
+    if(position[1]=='2')     
         row=7;
-    if(postion[1]=='3')
+    if(position[1]=='3')
         row=6;
-    if(postion[1]=='4')
+    if(position[1]=='4')
         row=5;
-    if(postion[1]=='5')
+    if(position[1]=='5')
         row=4;
-    if(postion[1]=='6')
+    if(position[1]=='6')
         row=3;
-    if(postion[1]=='7')
+    if(position[1]=='7')
         row=2;
-    if(postion[1]=='8')
+    if(position[1]=='8')
         row=1;
 }
-char Whatpiece(char piece){
-    if(piece=='P')
-        return 'P';
-    if(piece=='R')
-        return 'R';
-    if(piece=='k')
+char WhatPiece(char Board[][10],int row,int col){
+    if(Board[row][col]=='p')
+        return 'p';
+    if(Board[row][col]=='r')
+        return 'r';
+    if(Board[row][col]=='n')
         return 'k';
-    if(piece=='B')
-        return 'B';
-    if(piece=='Q')
-        return 'Q';
-    if(piece=='K')
-        return 'K';
+    if(Board[row][col]=='b')
+        return 'b';
+    if(Board[row][col]=='q')
+        return 'q';
+    if(Board[row][col]=='k')
+        return 'k';
+    return 'o';
+}
+void isLegalMove(char Board[][10],char piece,int& row,int &col,int &row2,int &col2){
+    std::cout<<piece<<'\n';
+    if(piece=='p'){
+        if(Board[row-1][col]==Board[row2][col2]){
+            Board[row2][col2]='p';
+            Board[row][col]=' ';
+            std::cout<<"Done"<<'\n';
+        }
+        else{
+            std::cout<<"illegalMove"<<'\n';
+        }
+    }
 }
 int main(){
     char Board[10][10]={
@@ -72,18 +86,25 @@ int main(){
 
     };
     printBoard(Board);
-    std::string postion;
-    std::string move;
-    std::int row=0;
-    std::int col=0;
+    std::string positionFrom;
+    std::string positionTo;
+    int row=0;
+    int col=0;
+    int row2=0;
+    int col2=0;
+    bool WhiteTurn=true;
     while(true){        
         std::cout<<"Enter The Postion of the piece that you want to move: ";
-        std::cin>>postion;
+        std::cin>>positionFrom;
         std::cout<<"Where to move: ";
-        std::cin>>move;
+        std::cin>>positionTo;
         row=0,col=0;
-        VerifyPostions(postion,move,row,col);
-        char piece = WhatPiece(Board[row][col]);
+        VerifyPostions(positionFrom,row,col);
+        char piece = WhatPiece(Board,row,col);
+        row2=0,col2=0;
+        VerifyPostions(positionTo,row2,col2);
+        isLegalMove(Board,piece,row,col,row2,col2);
+        printBoard(Board);
     }
     return 0;
 
